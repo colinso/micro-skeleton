@@ -1,11 +1,28 @@
 package api
 
 import (
+	"Personal/micro-skeleton/internal/config"
 	"fmt"
 	"net/http"
+
+	"github.com/apex/log"
+	"github.com/go-chi/chi/v5"
 )
 
-func Start() error {
-	fmt.Println("Starting up at port 8080")
-	return http.ListenAndServe(":8080", NewRouter())
+type Server struct {
+	cfg    *config.Config
+	router *chi.Mux
+}
+
+func NewServer(cfg *config.Config, router *chi.Mux) *Server {
+	return &Server{
+		cfg:    cfg,
+		router: router,
+	}
+}
+
+func (s Server) Start() error {
+	address := fmt.Sprintf("%s:%s", s.cfg.Host, s.cfg.Port)
+	log.Infof("Starting up at %s", address)
+	return http.ListenAndServe(address, s.router)
 }
