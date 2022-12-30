@@ -8,14 +8,24 @@ package wire
 
 import (
 	"Personal/micro-skeleton/internal/api"
+	"Personal/micro-skeleton/internal/commands"
 	"Personal/micro-skeleton/internal/config"
+	"Personal/micro-skeleton/internal/db"
+	"Personal/micro-skeleton/internal/handlers"
+	"Personal/micro-skeleton/internal/repo"
 )
 
 // Injectors from wire.go:
 
 func ConfigureServer() *api.Server {
 	configConfig := config.NewConfig()
-	mux := api.NewRouter()
+	getItem := handlers.NewGetItemHandler()
+	conn := db.NewDBConnection()
+	itemsRepo := repo.NewItemsRepo(conn)
+	inventoryManager := commands.NewInventoryManager(itemsRepo)
+	createItem := handlers.NewCreateItemHandler(inventoryManager)
+	updateItem := handlers.NewUpdateItemHandler()
+	mux := api.NewRouter(getItem, createItem, updateItem)
 	server := api.NewServer(configConfig, mux)
 	return server
 }
