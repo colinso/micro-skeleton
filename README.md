@@ -7,7 +7,7 @@ Dependencies:
 * Wire (Dependency Injection) - https://github.com/google/wire
 * Chi (HTTP Router) - https://github.com/go-chi/chi
 * Goose (DB Migrations) - https://github.com/pressly/goose
-* PostgreSQL (Database)
+* PostgreSQL/PGX (DB Driver) - https://github.com/jackc/pgx
 
 **TODOS**
 - Swagger documentation (https://github.com/swaggo/swag)

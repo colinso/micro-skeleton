@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "Personal/micro-skeleton/internal/grpc";
+
+package microskeleton;
+
+service MicroSkeleton {
+    rpc CreateItem(Item) returns (Item) {};
+    rpc GetItem(ItemID) returns (Item) {};
+}
+
+message Item {
+    string Name = 1;
+    float Price = 2;
+}
+
+message ItemID {
+    string ID = 1;
+}
