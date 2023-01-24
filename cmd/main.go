@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	// TODO: Handle gRPC server here
 	if err := wire.ConfigureServer().Start(); err != nil {
 		log.WithError(err).Error("Application shut down")
 		os.Exit(1)

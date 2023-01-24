@@ -5,6 +5,7 @@ package wire
 
 import (
 	"Personal/micro-skeleton/internal/api"
+	"Personal/micro-skeleton/internal/api/grpc"
 	"Personal/micro-skeleton/internal/commands"
 	"Personal/micro-skeleton/internal/config"
 	"Personal/micro-skeleton/internal/db"
@@ -24,6 +25,7 @@ func ConfigureServer() *api.Server {
 		handlers.Component,
 		commands.Component,
 		repo.Component,
+		grpc.Component,
 	)
 	return &api.Server{}
 }

@@ -8,6 +8,7 @@ package wire
 
 import (
 	"Personal/micro-skeleton/internal/api"
+	"Personal/micro-skeleton/internal/api/grpc"
 	"Personal/micro-skeleton/internal/commands"
 	"Personal/micro-skeleton/internal/config"
 	"Personal/micro-skeleton/internal/db"
@@ -26,6 +27,7 @@ func ConfigureServer() *api.Server {
 	createItem := handlers.NewCreateItemHandler(inventoryManager)
 	updateItem := handlers.NewUpdateItemHandler()
 	mux := api.NewRouter(getItem, createItem, updateItem)
-	server := api.NewServer(configConfig, mux)
-	return server
+	server := grpc.NewServer(inventoryManager)
+	apiServer := api.NewServer(configConfig, mux, server)
+	return apiServer
 }
