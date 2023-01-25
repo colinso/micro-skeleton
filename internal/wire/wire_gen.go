@@ -20,10 +20,10 @@ import (
 
 func ConfigureServer() *api.Server {
 	configConfig := config.NewConfig()
-	getItem := handlers.NewGetItemHandler()
 	conn := db.NewDBConnection()
 	itemsRepo := repo.NewItemsRepo(conn)
 	inventoryManager := commands.NewInventoryManager(itemsRepo)
+	getItem := handlers.NewGetItemHandler(inventoryManager)
 	createItem := handlers.NewCreateItemHandler(inventoryManager)
 	updateItem := handlers.NewUpdateItemHandler()
 	mux := api.NewRouter(getItem, createItem, updateItem)

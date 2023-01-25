@@ -1,14 +1,38 @@
 package handlers
 
-import "net/http"
+import (
+	"Personal/micro-skeleton/internal/commands"
+	"Personal/micro-skeleton/internal/models"
+	"encoding/json"
+	"net/http"
+	"strings"
+)
 
-type GetItem struct {
+type GetItemCommand interface {
+	GetItemById(id string) (models.Item, error)
 }
 
-func NewGetItemHandler() *GetItem {
-	return &GetItem{}
+type GetItem struct {
+	inventory GetItemCommand
+}
+
+func NewGetItemHandler(inventory *commands.InventoryManager) *GetItem {
+	return &GetItem{
+		inventory: inventory,
+	}
 }
 
 func (g GetItem) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Colin"))
+	urlSplit := strings.Split(r.URL.Path, "/")
+	id := urlSplit[len(urlSplit)-1]
+
+	item, err := g.inventory.GetItemById(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	b, _ := json.Marshal(item)
+	w.Write(b)
 }

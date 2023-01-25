@@ -4,11 +4,12 @@ import (
 	"Personal/micro-skeleton/internal/commands"
 	"Personal/micro-skeleton/internal/models"
 	context "context"
+	"fmt"
 )
 
 type CreateItemCommand interface {
 	CreateItem(name string, price float32) (models.Item, error)
-	GetItemById(id string) models.Item
+	GetItemById(id string) (models.Item, error)
 }
 
 type Server struct {
@@ -35,7 +36,9 @@ func (s Server) CreateItem(ctx context.Context, i *Item) (*Item, error) {
 }
 
 func (s Server) GetItem(ctx context.Context, id *ItemID) (*Item, error) {
-	item := s.inventory.GetItemById(id.ID)
+	fmt.Println(id)
+	item, _ := s.inventory.GetItemById(id.ID)
+	fmt.Println(item)
 	count := int32(item.Count)
 	return &Item{
 		ID:       &item.ID,

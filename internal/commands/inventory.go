@@ -3,6 +3,7 @@ package commands
 import (
 	"Personal/micro-skeleton/internal/models"
 	"Personal/micro-skeleton/internal/repo"
+	"context"
 
 	"github.com/apex/log"
 	"github.com/rs/xid"
@@ -18,8 +19,8 @@ func NewInventoryManager(repo *repo.ItemsRepo) *InventoryManager {
 	}
 }
 
-func (i InventoryManager) GetItemById(id string) models.Item {
-	return models.Item{}
+func (i InventoryManager) GetItemById(id string) (models.Item, error) {
+	return i.repo.GetItemById(context.Background(), id)
 }
 
 func (i InventoryManager) CreateItem(name string, price float32) (models.Item, error) {

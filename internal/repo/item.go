@@ -19,8 +19,19 @@ func NewItemsRepo(conn *pgx.Conn) *ItemsRepo {
 	}
 }
 
-func (i ItemsRepo) GetItemById() models.Item {
-	return models.Item{}
+func (i ItemsRepo) GetItemById(ctx context.Context, id string) (models.Item, error) {
+	builder := sqlbuilder.NewSelectBuilder()
+	sqlString, args := builder.
+		Select("*").
+		From("item").
+		Where(builder.Equal("id", id)).
+		BuildWithFlavor(sqlbuilder.PostgreSQL)
+
+	row := i.conn.QueryRow(ctx, sqlString, args...)
+
+	var item models.Item
+	err := row.Scan(&item.ID, &item.Name, &item.ImageURL, &item.Count, &item.Price)
+	return item, err
 }
 
 func (i ItemsRepo) CreateItem(item models.Item) error {
