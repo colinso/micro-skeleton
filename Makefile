@@ -43,3 +43,4 @@ migration-create:
 
 db-connect:
 	psql -h ${DB_HOST} -U ${DB_USER} ${DB_NAME}
+	
